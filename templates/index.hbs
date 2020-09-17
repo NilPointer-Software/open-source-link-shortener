@@ -10,15 +10,15 @@
     <div class="col s12"><h1 style="text-align: center;margin-bottom: 52px">Open source URL shortener</h1></div>
 </header>
 <main>
-    <form>
-        <div class="container">
+    <div class="container">
+        <form action="/new-shortcut" method="post">
             <div class="input-field col s10">
-                <input placeholder="https://github.com" id="url" type="text" class="validate">
+                <input placeholder="https://github.com" name="url" type="text" class="validate">
                 <label for="url">Enter URL and go!</label>
             </div>
-            <a class="waves-effect waves-light btn">Go!</a>
-        </div>
-    </form>
+            <button class="waves-effect waves-light btn">Go!</button>
+        </form>
+    </div>
 </main>
 {{> common/footer }}
 </div>

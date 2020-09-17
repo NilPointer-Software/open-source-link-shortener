@@ -1,0 +1,2 @@
+[global.databases]
+main = { url = "test.db" }
