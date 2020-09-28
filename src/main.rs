@@ -69,8 +69,13 @@ fn new_shortcut(db: MainDbConn, host: HostHeader, new_shortcut: Form<NewShortcut
         .execute(&*db)
         .expect("error");
 
+    let protocol = match host.0 {
+        "localhost:8000" => "http",
+        _ => "https",
+    };
+
     let template_data = NewShortcutTemplateData {
-        url: format!("https://{}/{}", host.0, &shortcut_data.code)
+        url: format!("{}://{}/{}",protocol, host.0, &shortcut_data.code)
     };
     Template::render("new_shortcut", &template_data)
 }
