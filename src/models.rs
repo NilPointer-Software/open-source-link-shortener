@@ -2,12 +2,19 @@ use diesel::{Queryable, Insertable};
 use super::schema::shortcuts;
 use serde::Serialize;
 
-#[derive(Queryable, Insertable)]
-#[table_name = "shortcuts"]
+#[derive(Queryable,Default)]
 pub struct Shortcut {
+    pub id: i32,
     pub code: String,
     pub url: String,
     pub visits_count: i32,
+}
+
+#[derive(Insertable)]
+#[table_name = "shortcuts"]
+pub struct NewDatabaseShortcut {
+    pub code: String,
+    pub url: String,
 }
 
 #[derive(FromForm)]
