@@ -22,6 +22,7 @@ use crate::host_guard::HostHeader;
 use rocket::response::Redirect;
 use diesel::prelude::*;
 use rocket::Request;
+use regex::Regex;
 
 #[get("/")]
 fn index() -> Template {
@@ -54,6 +55,18 @@ fn redirect_from_code(db: MainDbConn, request_code: String) -> Result<Option<Red
 #[post("/new-shortcut", data = "<new_shortcut>")]
 fn new_shortcut(db: MainDbConn, host: HostHeader, new_shortcut: Form<NewShortcut>) -> Template {
     println!("Creating new shortcut from url \"{}\"", new_shortcut.url);
+    let url_regex = Regex::new(
+        r#"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"#,
+    ).unwrap();
+    if !url_regex.is_match(&new_shortcut.url) {
+        return Template::render(
+            "error_code",
+            &ErrorCodeTemplateData {
+                error_message: "Invalid URL has been provided".to_string(),
+                error_desc: format!("\"{}\" doesn't look like an URL", new_shortcut.url),
+            },
+        );
+    }
     let short_code: String = thread_rng()
         .sample_iter(&Alphanumeric)
         .take(8)
