@@ -15,12 +15,13 @@ extern crate diesel;
 use rocket_contrib::templates::Template;
 use crate::database::{MainDbConn};
 use rocket::request::Form;
-use crate::models::{NewShortcut, Shortcut, NewShortcutTemplateData, NewDatabaseShortcut};
+use crate::models::{NewShortcut, Shortcut, NewShortcutTemplateData, NewDatabaseShortcut, ErrorCodeTemplateData};
 use rand::{thread_rng, distributions::Alphanumeric, Rng};
 use diesel::RunQueryDsl;
 use crate::host_guard::HostHeader;
 use rocket::response::Redirect;
 use diesel::prelude::*;
+use rocket::Request;
 
 #[get("/")]
 fn index() -> Template {
@@ -84,5 +85,15 @@ fn main() {
     rocket::ignite()
         .attach(MainDbConn::fairing())
         .attach(Template::fairing())
+        .register(catchers![ not_found])
         .mount("/", routes![index,new_shortcut,redirect_from_code]).launch();
+}
+
+#[catch(404)]
+fn not_found(req: &Request) -> Template {
+    let error_data = ErrorCodeTemplateData{
+        error_message: "HTTP 404: Page not found".to_string(),
+        error_desc: "Following link was not found on the server".to_string()
+    };
+    Template::render("error_code", &error_data)
 }

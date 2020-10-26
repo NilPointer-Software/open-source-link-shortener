@@ -26,3 +26,9 @@ pub struct NewShortcut {
 pub struct NewShortcutTemplateData {
     pub url: String,
 }
+
+#[derive(Serialize)]
+pub struct ErrorCodeTemplateData {
+    pub error_message: String,
+    pub error_desc: String,
+}
