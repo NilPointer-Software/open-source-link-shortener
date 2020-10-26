@@ -28,7 +28,7 @@ fn index() -> Template {
 }
 
 #[get("/<request_code>")]
-fn redirect_from_code(db: MainDbConn, request_code: String) -> Result<Redirect, Box<dyn std::error::Error>> {
+fn redirect_from_code(db: MainDbConn, request_code: String) -> Result<Option<Redirect>, Box<dyn std::error::Error>> {
     use crate::schema::shortcuts::dsl::*;
     use crate::schema::shortcuts;
     use crate::diesel::ExpressionMethods;
@@ -41,11 +41,10 @@ fn redirect_from_code(db: MainDbConn, request_code: String) -> Result<Redirect, 
     match found_shortcuts.len() {
         1 => {
             let selected_shortcut = &found_shortcuts[0];
-            Ok(Redirect::moved(selected_shortcut.url.clone()))
+            Ok(Some(Redirect::moved(selected_shortcut.url.clone())))
         }
         _ => {
-            // TODO: redirect to not found or something
-            Ok(Redirect::temporary("http://localhost:8000"))
+            Ok(None)
         }
     }
 }
