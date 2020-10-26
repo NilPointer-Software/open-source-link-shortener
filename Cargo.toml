@@ -12,6 +12,7 @@ diesel = { version = "1.4.4", features = ["postgres","sqlite"] }
 dotenv = "0.15.0"
 rand = "0.7.3"
 serde = { version = "1.0", features = ["derive"] }
+regex = "1.4.1"
 
 [dependencies.rocket_contrib]
 version = "0.4.5"
