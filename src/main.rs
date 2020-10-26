@@ -85,15 +85,24 @@ fn main() {
     rocket::ignite()
         .attach(MainDbConn::fairing())
         .attach(Template::fairing())
-        .register(catchers![ not_found])
+        .register(catchers![ not_found,internal_error])
         .mount("/", routes![index,new_shortcut,redirect_from_code]).launch();
 }
 
 #[catch(404)]
-fn not_found(req: &Request) -> Template {
+fn not_found() -> Template {
     let error_data = ErrorCodeTemplateData{
         error_message: "HTTP 404: Page not found".to_string(),
-        error_desc: "Following link was not found on the server".to_string()
+        error_desc: "Following link shortcut was not found on the server".to_string()
+    };
+    Template::render("error_code", &error_data)
+}
+
+#[catch(500)]
+fn internal_error() -> Template {
+    let error_data = ErrorCodeTemplateData{
+        error_message: "HTTP 500: Internal server error".to_string(),
+        error_desc: "Something went really wrong. Please try again later.".to_string()
     };
     Template::render("error_code", &error_data)
 }
