@@ -93,13 +93,19 @@ fn new_shortcut(db: MainDbConn, host: HostHeader, new_shortcut: Form<NewShortcut
     Template::render("new_shortcut", &template_data)
 }
 
+#[get("/admin/login")]
+fn admin_login() -> Template {
+    Template::render("admin_login", 0)
+}
+
+
 fn main() {
     println!("Connected to database!");
     rocket::ignite()
         .attach(MainDbConn::fairing())
         .attach(Template::fairing())
         .register(catchers![ not_found,internal_error])
-        .mount("/", routes![index,new_shortcut,redirect_from_code]).launch();
+        .mount("/", routes![index,new_shortcut,redirect_from_code,admin_login]).launch();
 }
 
 #[catch(404)]
