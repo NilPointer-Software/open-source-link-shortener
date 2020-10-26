@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open source link shortener</title>
+    {{> common/head}}
+</head>
+
+<body>
+<header>
+    <div class="col s12"><h1 style="text-align: center;margin-bottom: 52px">Admin login</h1></div>
+</header>
+<main>
+    <div class="container">
+        <form method="post">
+            <div class="input-field col s12 m6">
+                <input name="email" type="text" >
+                <label for="email">Your e-mail address</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input name="password" type="password" >
+                <label for="password">Your password</label>
+            </div>
+            <button class="waves-effect waves-light btn">Sign in</button>
+        </form>
+    </div>
+</main>
+{{> common/footer }}
+</div>
+
+<!--JavaScript at end of body for optimized loading-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
